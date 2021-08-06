@@ -1,15 +1,24 @@
-import './style.css';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import "./style.css";
+import "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
+
+import * as THREE from "three";
+
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 // Setup
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector('#bg'),
+  canvas: document.querySelector("#bg"),
 });
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -60,21 +69,24 @@ Array(200).fill().forEach(addStar);
 
 // Background
 
-const spaceTexture = new THREE.TextureLoader().load('space.jpg');
+const spaceTexture = new THREE.TextureLoader().load("space.jpg");
 scene.background = spaceTexture;
 
 // Avatar
 
-const jeffTexture = new THREE.TextureLoader().load('jeff.png');
+const jeffTexture = new THREE.TextureLoader().load("jeff.png");
 
-const jeff = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: jeffTexture }));
+const jeff = new THREE.Mesh(
+  new THREE.BoxGeometry(3, 3, 3),
+  new THREE.MeshBasicMaterial({ map: jeffTexture })
+);
 
 scene.add(jeff);
 
 // Moon
 
-const moonTexture = new THREE.TextureLoader().load('moon.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+const moonTexture = new THREE.TextureLoader().load("moon.jpg");
+const normalTexture = new THREE.TextureLoader().load("normal.jpg");
 
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
@@ -116,9 +128,9 @@ moveCamera();
 function animate() {
   requestAnimationFrame(animate);
 
-//   torus.rotation.x += 0.01;
-//   torus.rotation.y += 0.005;
-//   torus.rotation.z += 0.01;
+  //   torus.rotation.x += 0.01;
+  //   torus.rotation.y += 0.005;
+  //   torus.rotation.z += 0.01;
 
   moon.rotation.x += 0.005;
 
@@ -128,3 +140,15 @@ function animate() {
 }
 
 animate();
+
+function makeButton(name, onclick) {
+  let button = document.createElement("a");
+  button.classList.add("waves-effect", "waves-light", "btn");
+  button.innerHTML = name;
+  button.onclick = onclick;
+
+  let buttons = document.querySelector("#buttons");
+  buttons.appendChild(button);
+}
+
+makeButton("Hello", () => console.log("Clicked!"));

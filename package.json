@@ -1,5 +1,5 @@
 {
-  "name": "three-demo",
+  "name": "poker",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
     "vite": "^2.3.0"
   },
   "dependencies": {
-    "three": "^0.128.0"
+    "materialize-css": "^1.0.0",
+    "three": "^0.131.3"
   }
 }
