@@ -151,4 +151,25 @@ function makeButton(name, onclick) {
   buttons.appendChild(button);
 }
 
-makeButton("Hello", () => console.log("Clicked!"));
+function sayHello() {
+  alert("Hello!");
+}
+
+async function sayClassy() {
+  let resp = await fetch("/api/state");
+  console.log(await resp.json());
+}
+
+function connect() {
+  let ws = new WebSocket(`ws://localhost:3000/ws/test`);
+  ws.onmessage = function (event) {
+    console.log(event);
+  };
+  ws.onclose = function (event) {
+    console.log(event);
+  };
+}
+
+makeButton("Hello", sayHello);
+makeButton("Fetch", sayClassy);
+makeButton("Connect", connect);
