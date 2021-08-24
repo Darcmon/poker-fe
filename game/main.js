@@ -1,4 +1,4 @@
-import "./style.css";
+import "../style.css";
 import "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 
@@ -68,8 +68,6 @@ const firstCard = new THREE.Mesh(
 
 scene.add(firstCard);
 
-
-
 // Moon
 
 const moonTexture = new THREE.TextureLoader().load("moon.jpg");
@@ -90,8 +88,6 @@ moon.position.x = 2;
 
 firstCard.position.z = 25;
 firstCard.position.x = 2;
-
-
 
 // Animation Loop
 
