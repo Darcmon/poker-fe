@@ -16,3 +16,10 @@ code {
   margin-left: 2px;
   margin-right: 2px;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
