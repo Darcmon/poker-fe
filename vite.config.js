@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
-import { resolve } from "path";
 
 export default defineConfig({
   server: {
@@ -13,13 +12,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [reactRefresh()],
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, "index.html"),
-        game: resolve(__dirname, "game/index.html"),
-      },
-    },
-  },
+  plugins: [reactRefresh({ exclude: "src/Game.jsx" })],
 });

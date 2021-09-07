@@ -15,7 +15,7 @@ export default function Login({ setAuth }) {
   };
 
   return (
-    <div className="green center" style={{ minHeight: 300 }}>
+    <div className="center" style={{ minHeight: 300 }}>
       <GoogleLogin
         clientId="951763265125-6f417ln1kmlc6kmrtgh5sbt463cm8eh3.apps.googleusercontent.com"
         responseType="code"

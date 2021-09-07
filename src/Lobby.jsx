@@ -1,3 +1,4 @@
+import { Button, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { useAuth, useUser } from "./AuthContext";
 
@@ -22,6 +23,7 @@ export default function Lobby() {
     return (
       <div style={{ textAlign: "center" }}>
         <h1>Game Lobby</h1>
+        {user ? <img src={user.picture} /> : null}
         <h2>Game Code: {gameCode}</h2>
       </div>
     );
@@ -30,29 +32,16 @@ export default function Lobby() {
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Game Lobby</h1>
-      <img src={user.picture} />
+      {user ? <img src={user.picture} /> : null}
       <h2>Join Game</h2>
-      <div>
-        <div className="input-field inline">
-          <input id="join-game-name" type="text" className="validate"></input>
-          <label htmlFor="join-game-name">Name</label>
-        </div>
-        <div className="input-field inline">
-          <input id="join-game-code" type="text" className="validate"></input>
-          <label htmlFor="join-game-code">Code</label>
-        </div>
-      </div>
-      <a className="waves-effect waves-light btn">Join Game</a>
+      <TextField label="Name" />
+      <TextField label="Code" />
+      <Button variant="contained">Join Game</Button>
       <h2>Host Game</h2>
-      <div>
-        <div className="input-field inline">
-          <input id="host-game-name" type="text" className="validate"></input>
-          <label htmlFor="host-game-name">Name</label>
-        </div>
-      </div>
-      <a className="waves-effect waves-light btn" onClick={createGame}>
+      <TextField label="Name" />
+      <Button variant="contained" onClick={createGame}>
         Create Game
-      </a>
+      </Button>
     </div>
   );
 }
