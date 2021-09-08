@@ -4,14 +4,21 @@ import { useAuth, useUser } from "./AuthContext";
 
 export default function Lobby() {
   const [gameCode, setGameCode] = useState();
+  const [nickName, setNickName] = useState("");
   const auth = useAuth();
   const user = useUser();
+
+  const handleChange = (event) => {
+    setNickName(event.target.value);
+  };
 
   const createGame = async () => {
     const response = await fetch("/api/game", {
       method: "POST",
+      body: JSON.stringify({ nickName: nickName }),
       headers: {
         Authorization: "Bearer " + auth.access_token,
+        "Content-Type": "application/json",
       },
     });
     const payload = await response.json();
@@ -38,7 +45,7 @@ export default function Lobby() {
       <TextField label="Code" />
       <Button variant="contained">Join Game</Button>
       <h2>Host Game</h2>
-      <TextField label="Name" />
+      <TextField label="Name" value={nickName} onChange={handleChange} />
       <Button variant="contained" onClick={createGame}>
         Create Game
       </Button>
