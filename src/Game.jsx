@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import React, { useEffect, useRef } from "react";
 
+import { Button } from "@material-ui/core";
 import heartUrl from "../assets/heart.png";
 import moonUrl from "../assets/moon.jpg";
 import normalUrl from "../assets/normal.jpg";
@@ -78,5 +79,10 @@ export default function Game() {
     animate();
   }, []);
 
-  return <div ref={ref} />;
+  return (
+    <div>
+      <div ref={ref} />
+      <div className="game-buttons"></div>
+    </div>
+  );
 }

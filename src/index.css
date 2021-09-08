@@ -12,14 +12,17 @@ code {
     monospace;
 }
 
-.btn {
-  margin-left: 2px;
-  margin-right: 2px;
-}
-
-.center {
+.hero {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: cornflowerblue;
+}
+
+.game-buttons {
+  text-align: center;
+  position: absolute;
+  bottom: 1em;
+  width: 100%;
 }
