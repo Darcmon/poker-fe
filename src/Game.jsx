@@ -11,6 +11,8 @@ import pokerTableUrl from "../assets/pokertable.jpg";
 export default function Game() {
   const ref = useRef(null);
 
+  let vertical = false;
+
   useEffect(() => {
     console.log("Initializing the scene...");
 
@@ -72,7 +74,12 @@ export default function Game() {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      moon.rotation.x += 0.005;
+      if (vertical) {
+        moon.rotation.x += 0.005;
+      } else {
+        moon.rotation.y += 0.005;
+      }
+
       renderer.render(scene, camera);
     };
 
@@ -82,7 +89,16 @@ export default function Game() {
   return (
     <div>
       <div ref={ref} />
-      <div className="game-buttons"></div>
+      <div className="game-buttons">
+        <Button
+          variant="contained"
+          onClick={() => {
+            vertical = !vertical;
+          }}
+        >
+          Toggle Rotation
+        </Button>
+      </div>
     </div>
   );
 }
