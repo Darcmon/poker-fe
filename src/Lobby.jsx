@@ -18,7 +18,7 @@ export default function Lobby() {
   };
 
   const createGame = async () => {
-    const response = await fetch("/api/game", {
+    const response = await fetch("/api/games", {
       method: "POST",
       body: JSON.stringify({ nick_name: nickName }),
       headers: {
@@ -32,8 +32,8 @@ export default function Lobby() {
   };
 
   const joinGame = async () => {
-    const response = await fetch("/api/join", {
-      method: "POST",
+    const response = await fetch("/api/games", {
+      method: "PATCH",
       body: JSON.stringify({ nick_name: nickName, game_code: joinGameCode }),
       headers: {
         Authorization: "Bearer " + auth.access_token,
