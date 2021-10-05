@@ -22,20 +22,14 @@ export default function Lobby() {
     setGameState(payload);
   }, [gameId]);
 
-  let players = [];
-  if (gameState["players"]) {
-    players = Object.keys(gameState["players"]);
-  }
-  console.log(players);
-
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Game Lobby</h1>
       {user ? <img src={user.picture} /> : null}
       <h2>Game Code: {gameState["game_code"]}</h2>
       <h3>Players</h3>
-      {players.map((player) => (
-        <div>{player}</div>
+      {gameState["players"].map((player) => (
+        <div key={player}>{player}</div>
       ))}
     </div>
   );

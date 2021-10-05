@@ -1,12 +1,14 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, Snackbar, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { useAuth, useUser } from "./AuthContext";
 
+import MuiAlert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router";
 
 export default function Home() {
   const history = useHistory();
   const [gameCode, setGameCode] = useState();
+  const [errorMessage, setErrorMessage] = useState(null);
   const [joinGameCode, setJoinGameCode] = useState("");
   const [nickName, setNickName] = useState("");
   const auth = useAuth();
@@ -44,10 +46,14 @@ export default function Home() {
         "Content-Type": "application/json",
       },
     });
-    if (response.status == 404) {
-      console.log("General Snackbar");
-    }
     const payload = await response.json();
+
+    if (response.status == 404) {
+      console.log("General Snackbar", payload);
+      setErrorMessage(payload["detail"]);
+      return;
+    }
+
     setGameCode(payload["game_code"]);
     console.log(payload);
     history.push(`/lobby/${payload["game_id"]}`);
@@ -82,6 +88,15 @@ export default function Home() {
       <Button variant="contained" onClick={createGame}>
         Create Game
       </Button>
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage(null)}
+      >
+        <MuiAlert severity="error" elevation={6} variant="filled">
+          {errorMessage}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }
