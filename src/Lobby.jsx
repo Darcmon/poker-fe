@@ -9,18 +9,22 @@ export default function Lobby() {
   const [gameState, setGameState] = useState({});
   const user = useUser();
 
-  useEffect(async () => {
-    const response = await fetch(`/api/games/${gameId}`, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + auth.access_token,
-        "Content-Type": "application/json",
-      },
-    });
-    const payload = await response.json();
-    console.log(payload);
-    setGameState(payload);
+  useEffect(() => {
+    const host = location.origin.replace(/^http/, "ws");
+    let ws = new WebSocket(
+      `${host}/ws/games/${gameId}?token=${auth.access_token}`
+    );
+    ws.onmessage = (event) => {
+      const payload = JSON.parse(event.data);
+      console.log(payload);
+      setGameState(payload);
+    };
+    return () => ws.close();
   }, [gameId]);
+
+  if (gameState["players"] === undefined) {
+    return "Loading";
+  }
 
   return (
     <div style={{ textAlign: "center" }}>

@@ -31,6 +31,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
     });
+
     const payload = await response.json();
     setGameCode(payload["game_code"]);
     console.log(payload);
@@ -49,7 +50,6 @@ export default function Home() {
     const payload = await response.json();
 
     if (response.status == 404) {
-      console.log("General Snackbar", payload);
       setErrorMessage(payload["detail"]);
       return;
     }
