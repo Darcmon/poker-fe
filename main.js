@@ -15,11 +15,11 @@ class Poker extends Phaser.Scene {
     const card = this.add.graphics();
     card.fillStyle(0xffffff, 1);
     card.fillRoundedRect(200, 200, 250, 350, 16);
-    const text = this.add.text(325, 375, "♣", {
+    const createCard = this.add.text(200, 200, "2\n\t\t♥\n\t\t♥\n\t\t\t\t2", {
       fontSize: "80px",
-      color: "#000",
+      color: "#FF0000",
     });
-    text.setTextBounds(0, 100, 250, 350);
+    createCard.setTextBounds(0, 100, 250, 350);
   }
 
   update() {}
