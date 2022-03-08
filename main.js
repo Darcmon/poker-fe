@@ -8,13 +8,16 @@ class Card extends Phaser.GameObjects.Container {}
 
 class Poker extends Phaser.Scene {
   preload() {
-    this.load.image("PokerTable", "assets/pokertable.jpg");
-    this.load.image("Card", "assets/card.png");
+    window.addEventListener("resize", this.resize.bind(this));
+  }
+
+  resize() {
+    let w = window.innerWidth * window.devicePixelRatio;
+    let h = window.innerHeight * window.devicePixelRatio;
+    this.scale.resize(w, h);
   }
 
   create() {
-    this.add.image(400, 300, "PokerTable");
-
     const twoOfHearts = this.add.card(-200, -200, "2", "♥");
     const aceOfClubs = this.add.card(-200, -200, "A", "♣");
 
@@ -45,11 +48,14 @@ class Poker extends Phaser.Scene {
   update() {}
 }
 
-const config = {
+const game = new Phaser.Game({
   type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
+  backgroundColor: "0x0e5628",
+  scale: {
+    mode: Phaser.Scale.NONE,
+    width: window.innerWidth * window.devicePixelRatio,
+    height: window.innerHeight * window.devicePixelRatio,
+    zoom: 1 / window.devicePixelRatio,
+  },
   scene: [Poker],
-};
-
-const game = new Phaser.Game(config);
+});
