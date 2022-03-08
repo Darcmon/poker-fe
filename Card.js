@@ -17,6 +17,8 @@ export class Card extends Phaser.GameObjects.Container {
     const background = this.scene.add.graphics();
     background.fillStyle(0xffffff, 1);
     background.fillRoundedRect(LEFT, TOP, WIDTH, HEIGHT, 16);
+    background.lineStyle(2, 0x000000);
+    background.strokeRoundedRect(LEFT, TOP, WIDTH, HEIGHT, 16);
     cardFront.add(background);
 
     const centerText = this.scene.add.text(0, 0, suit, {
