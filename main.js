@@ -1,35 +1,76 @@
 import "./style.css";
 
 import "phaser";
-
-class Card extends Phaser.GameObjects.Container {}
+import "./Card";
+import { Card } from "./Card";
 
 class Poker extends Phaser.Scene {
   preload() {
     this.load.image("PokerTable", "assets/pokertable.jpg");
-    this.load.image("Card", "assets/card.png");
+    window.addEventListener("resize", this.resize.bind(this));
+  }
+
+  resize() {
+    let w = window.innerWidth * window.devicePixelRatio;
+    let h = window.innerHeight * window.devicePixelRatio;
+    this.scale.resize(w, h);
   }
 
   create() {
-    this.add.image(400, 300, "PokerTable");
-    const card = this.add.graphics();
-    card.fillStyle(0xffffff, 1);
-    card.fillRoundedRect(200, 200, 250, 350, 16);
-    const text = this.add.text(325, 375, "♣", {
-      fontSize: "80px",
-      color: "#000",
+    this.cameras.main.setRoundPixels(true);
+
+    const card1 = this.add.card(0, 0, "A", "♣");
+    const card2 = this.add.card(0, 0, "10", "♥");
+    const card3 = this.add.card(0, 0, "J", "♦");
+
+    const card4 = this.add.card(
+      this.game.canvas.width / 2,
+      this.game.canvas.height / 2,
+      "4",
+      "♠"
+    );
+    card4.flip();
+
+    const tween1 = this.tweens.add({
+      targets: card1,
+      x: this.game.canvas.width / 2 - 50,
+      y: this.game.canvas.height - 250,
+      rotation: -Math.PI / 20,
+      ease: "Power1",
+      duration: 1000,
     });
-    text.setTextBounds(0, 100, 250, 350);
+
+    const tween2 = this.tweens.add({
+      targets: card2,
+      x: this.game.canvas.width / 2,
+      y: this.game.canvas.height - 250,
+      ease: "Power1",
+      delay: 100,
+      duration: 1000,
+    });
+
+    const tween3 = this.tweens.add({
+      targets: card3,
+      x: this.game.canvas.width / 2 + 50,
+      y: this.game.canvas.height - 250,
+      rotation: Math.PI / 20,
+      ease: "Power1",
+      delay: 200,
+      duration: 1000,
+    });
   }
 
   update() {}
 }
 
-const config = {
+const game = new Phaser.Game({
   type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
+  backgroundColor: "0x0e5628",
+  scale: {
+    mode: Phaser.Scale.NONE,
+    width: window.innerWidth * window.devicePixelRatio,
+    height: window.innerHeight * window.devicePixelRatio,
+    zoom: 1 / window.devicePixelRatio,
+  },
   scene: [Poker],
-};
-
-const game = new Phaser.Game(config);
+});
