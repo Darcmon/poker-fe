@@ -24,6 +24,7 @@ export class Card extends Phaser.GameObjects.Container {
     const rankAndSuit = `${rank}\n${suit}`;
 
     const cardFront = this.scene.add.container(0, 0);
+    const cardBack = this.scene.add.container(0, 0);
 
     const background = this.scene.add.graphics();
     background.fillStyle(0xffffff, 1);
@@ -64,18 +65,34 @@ export class Card extends Phaser.GameObjects.Container {
   flip() {
     // this.add
     // this.tweens
-    // const timeline = this.scene.tweens.createTimeline();
-    this.scene.tweens.add({
-      targets: [this],
-      x: -200,
-      y: -200,
-      ease: "Power1",
-      duration: 1000,
-      onComplete: () => {
-        this.cardFront.setVisible(false);
-      },
-    });
-    // timeline.play()
+    const timeline = this.scene.tweens.createTimeline();
+    timeline.add(
+      {targets:this.cardFront,
+        scaleX:0.01,
+        duration:500,
+        ease:Phaser.Math.Easing.Cubic.Out,
+        // onComplete: () => {
+        //   backOfCard.cardBack.setVisible(true);
+        // }
+      });
+    timeline.add(
+      {targets:this.cardFront,
+        scaleX:0.01,
+        duration:500,
+        ease:Phaser.Math.Easing.Cubic.In,
+        onComplete: () => {
+          this.cardFront.setVisible(false);
+        }
+      });
+    // this.scene.tweens.add({
+    //   targets: [this],
+    //   ease: "Power1",
+    //   duration: 1000,
+    //   onComplete: () => {
+    //     this.cardFront.setVisible(false);
+    //   },
+    // });
+    timeline.play()
   }
 }
 
