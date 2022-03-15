@@ -12,13 +12,19 @@ class Poker extends Phaser.Scene {
     this.scale.resize(window.innerWidth, window.innerHeight);
   }
 
+  // deal() {}
+
   create() {
-    const twoOfHearts = this.add.card(-200, -200, "2", "♥");
-    const backOfCard2 = this.add.card(-200, -200, "", "" );
-    const aceOfClubs = this.add.card(-200, -200, "A", "♣");
-    const backOfCard = this.add.card(-200, -200, "", "" );
-    // backOfCard2.cardFront.setVisible(false);
-    // backOfCard.cardFront.setVisible(false);
+    const twoOfHearts = this.add.card(-200, -200, true, "2", "♥");
+    const aceOfClubs = this.add.card(-200, -200, false, "A", "♣");
+
+    // Create a face down card to be the deck.
+    // On click,
+    // deckOfCards.on("pointerup", this.deal) (i.e. a tween));
+    // this.state = "my state"
+    // if (this.state === "something") {
+    //   "do something"
+    // }
 
     this.tweens.add({
       targets: [twoOfHearts],
@@ -30,27 +36,9 @@ class Poker extends Phaser.Scene {
     });
 
     this.tweens.add({
-      targets: [backOfCard2],
-      x: this.game.canvas.width / 2,
-      y: this.game.canvas.height - backOfCard.height,
-      rotation: -Math.PI / 20,
-      ease: "Power1",
-      duration: 2000,
-    });
-
-    this.tweens.add({
       targets: [aceOfClubs],
       x: this.game.canvas.width / 2 + 20,
       y: this.game.canvas.height - aceOfClubs.height,
-      rotation: Math.PI / 20,
-      ease: "Power1",
-      duration: 2000,
-    });
-    
-    this.tweens.add({
-      targets: [backOfCard],
-      x: this.game.canvas.width / 2 + 20,
-      y: this.game.canvas.height - backOfCard.height,
       rotation: Math.PI / 20,
       ease: "Power1",
       duration: 2000,
