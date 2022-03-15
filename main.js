@@ -13,8 +13,8 @@ class Poker extends Phaser.Scene {
   }
 
   create() {
-    const twoOfHearts = this.add.card(-200, -200, "2", "♥");
-    const aceOfClubs = this.add.card(-200, -200, "A", "♣");
+    const twoOfHearts = this.add.card(-200, -200, true, "2", "♥");
+    const aceOfClubs = this.add.card(-200, -200, false, "A", "♣");
 
     this.tweens.add({
       targets: [twoOfHearts],

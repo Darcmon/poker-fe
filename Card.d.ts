@@ -1,9 +1,16 @@
-declare interface ICard extends Phaser.GameObjects.Container {
+declare interface Card extends Phaser.GameObjects.Container {
   flip(): void;
+  setRankAndSuit(rank: string, suit: string): void;
 }
 
 declare namespace Phaser.GameObjects {
   interface GameObjectFactory {
-    card(): ICard;
+    card(
+      x: number,
+      y: number,
+      faceDown: boolean,
+      rank: string,
+      suit: string
+    ): Card;
   }
 }
