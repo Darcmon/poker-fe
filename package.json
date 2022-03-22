@@ -10,6 +10,7 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "*",
     "phaser": "^3.55.2",
+    "phaser3-rex-plugins": "^1.1.68",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-google-login": "^5.2.2",

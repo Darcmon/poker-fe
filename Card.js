@@ -9,6 +9,20 @@ const BOTTOM = HEIGHT / 2;
 const RIGHT = WIDTH / 2;
 const MARGIN = 4;
 
+const RED = {
+  fontFamily: "system-ui",
+  color: "#e93323",
+  align: "center",
+  fontSize: 60,
+};
+
+const WHITE = {
+  fontFamily: "system-ui",
+  color: "#ffffff",
+  align: "center",
+  fontSize: 60,
+};
+
 export class Card extends Phaser.GameObjects.Container {
   constructor(scene, x, y, faceDown, rank, suit) {
     super(scene, x, y);
@@ -25,6 +39,22 @@ export class Card extends Phaser.GameObjects.Container {
     this.cardBack.add(backBackground);
     this.add(this.cardBack);
 
+    const diamondText = this.scene.add.text(LEFT / 2, TOP / 2, "♦", RED);
+    diamondText.setOrigin(0.5, 0.5);
+    this.cardBack.add(diamondText);
+
+    const clubText = this.scene.add.text(RIGHT / 2, TOP / 2, "♣", WHITE);
+    clubText.setOrigin(0.5, 0.5);
+    this.cardBack.add(clubText);
+
+    const heartText = this.scene.add.text(RIGHT / 2, BOTTOM / 2, "♥", RED);
+    heartText.setOrigin(0.5, 0.5);
+    this.cardBack.add(heartText);
+
+    const spadeText = this.scene.add.text(LEFT / 2, BOTTOM / 2, "♠", WHITE);
+    spadeText.setOrigin(0.5, 0.5);
+    this.cardBack.add(spadeText);
+
     this.cardFront = this.scene.add.container();
     this.setRankAndSuit(rank, suit);
     this.add(this.cardFront);
@@ -38,14 +68,6 @@ export class Card extends Phaser.GameObjects.Container {
     }
     // this.cardBack.setVisible(faceDown);
     // this.cardFront.setVisible(!faceDown);
-
-    this.setInteractive();
-    this.on("pointerup", this.flip);
-
-    this.scene.input.setDraggable(this);
-    this.on("drag", (_, dragX, dragY) => {
-      this.setPosition(dragX, dragY);
-    });
   }
 
   setRankAndSuit(rank, suit) {
@@ -90,8 +112,6 @@ export class Card extends Phaser.GameObjects.Container {
   }
 
   flip() {
-    // this.add
-    // this.tweens
     const timeline = this.scene.tweens.createTimeline();
     timeline.add({
       targets: this,

@@ -3,10 +3,6 @@ import * as THREE from "three";
 import React, { useEffect, useRef } from "react";
 
 import { Button } from "@material-ui/core";
-import heartUrl from "../assets/heart.png";
-import moonUrl from "../assets/moon.jpg";
-import normalUrl from "../assets/normal.jpg";
-import pokerTableUrl from "../assets/pokertable.jpg";
 
 export default function Game() {
   const ref = useRef(null);
