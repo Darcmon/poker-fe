@@ -9,22 +9,32 @@ const BOTTOM = HEIGHT / 2;
 const RIGHT = WIDTH / 2;
 const MARGIN = 4;
 
-const RED = {
+const RED: Phaser.Types.GameObjects.Text.TextStyle = {
   fontFamily: "system-ui",
   color: "#e93323",
   align: "center",
-  fontSize: 60,
+  fontSize: "60px",
 };
 
-const WHITE = {
+const WHITE: Phaser.Types.GameObjects.Text.TextStyle = {
   fontFamily: "system-ui",
   color: "#ffffff",
   align: "center",
-  fontSize: 60,
+  fontSize: "60px",
 };
 
 export class Card extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, faceDown, rank, suit) {
+  cardBack: Phaser.GameObjects.Container;
+  cardFront: Phaser.GameObjects.Container;
+
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    faceDown: boolean,
+    rank?: string,
+    suit?: string
+  ) {
     super(scene, x, y);
 
     this.setSize(WIDTH, HEIGHT);
@@ -56,7 +66,7 @@ export class Card extends Phaser.GameObjects.Container {
     this.cardBack.add(spadeText);
 
     this.cardFront = this.scene.add.container();
-    this.setRankAndSuit(rank, suit);
+    this.setRankAndSuit(rank || "", suit || "");
     this.add(this.cardFront);
 
     if (faceDown) {
@@ -73,9 +83,9 @@ export class Card extends Phaser.GameObjects.Container {
   setRankAndSuit(rank, suit) {
     this.cardFront.removeAll(true);
 
-    const font = {
+    const font: Phaser.Types.GameObjects.Text.TextStyle = {
       fontFamily: "system-ui",
-      fontSize: 30,
+      fontSize: "30px",
       color: suit === "♥" || suit === "♦" ? "#e93323" : "#000000",
       align: "center",
     };
@@ -133,9 +143,29 @@ export class Card extends Phaser.GameObjects.Container {
   }
 }
 
+declare global {
+  namespace Phaser.GameObjects {
+    interface GameObjectFactory {
+      card(
+        x: number,
+        y: number,
+        faceDown: boolean,
+        rank?: string,
+        suit?: string
+      ): Card;
+    }
+  }
+}
+
 Phaser.GameObjects.GameObjectFactory.register(
   "card",
-  function (x, y, faceDown, rank, suit) {
+  function (
+    x: number,
+    y: number,
+    faceDown: boolean,
+    rank?: string,
+    suit?: string
+  ) {
     const card = new Card(this.scene, x, y, faceDown, rank, suit);
     this.scene.add.existing(card);
     return card;
