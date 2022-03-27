@@ -1,13 +1,13 @@
 import "./style.css";
-
 import "phaser";
-import "./Card";
-
-import InputTextPlugin from "phaser3-rex-plugins/plugins/inputtext-plugin";
 import { Card } from "./Card";
 
-class Poker extends Phaser.Scene {
+export default class Poker extends Phaser.Scene {
   deck: Card;
+
+  constructor() {
+    super(Poker.name);
+  }
 
   preload() {
     window.addEventListener("resize", this.resize.bind(this));
@@ -43,6 +43,8 @@ class Poker extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.setBackgroundColor("0x0e5628");
+
     this.deck = this.add.card(
       this.game.canvas.width / 2,
       this.game.canvas.height / 2,
@@ -55,24 +57,3 @@ class Poker extends Phaser.Scene {
 
   update() {}
 }
-
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: "root",
-  dom: {
-    createContainer: true,
-  },
-  backgroundColor: "0x0e5628",
-  width: window.innerWidth,
-  height: window.innerHeight,
-  scene: [Poker],
-  plugins: {
-    global: [
-      {
-        key: "rexInputText",
-        plugin: InputTextPlugin,
-        start: true,
-      },
-    ],
-  },
-});

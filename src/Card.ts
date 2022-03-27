@@ -80,7 +80,7 @@ export class Card extends Phaser.GameObjects.Container {
     // this.cardFront.setVisible(!faceDown);
   }
 
-  setRankAndSuit(rank, suit) {
+  setRankAndSuit(rank: string, suit: string) {
     this.cardFront.removeAll(true);
 
     const font: Phaser.Types.GameObjects.Text.TextStyle = {
