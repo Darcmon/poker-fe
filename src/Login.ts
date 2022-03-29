@@ -39,25 +39,33 @@ export default class Login extends Phaser.Scene {
       .button(0, 0, "Login with Google")
       .on("pointerup", async () => {
         await signIn();
-        loginContainer.setVisible(false);
-        hostOrJoinContainer.setVisible(true);
+
+        const timeline = this.tweens.createTimeline();
+        timeline.add({
+          targets: loginContainer,
+          scaleX: 0,
+          scaleY: 0,
+          duration: 500,
+          ease: Phaser.Math.Easing.Cubic.In,
+          onComplete: () => {
+            loginContainer.setVisible(false);
+            hostOrJoinContainer.setVisible(true).setScale(0, 0);
+          },
+        });
+        timeline.add({
+          targets: hostOrJoinContainer,
+          scaleX: 1,
+          scaleY: 1,
+          duration: 500,
+          ease: Phaser.Math.Easing.Cubic.Out,
+        });
+        timeline.play();
       });
     const loginContainer = this.add
       .container(xCenter, yCenter)
       .setVisible(false)
       .add(loginButton);
 
-    const nickNameTextField = this.add
-      .rexInputText(0, -120, 300, 25, {
-        type: "text",
-        fontSize: "20px",
-        align: "center",
-      })
-      .setPlaceholder("nick name")
-      .setStyle("outline", "auto")
-      .setStyle("padding", "1em")
-      .setOrigin(0.5, 0)
-      .setStyle("border", "#ffffff");
     const gameCodeTextField = this.add
       .rexInputText(-10, -28, 140, 25, {
         type: "text",
@@ -77,7 +85,6 @@ export default class Login extends Phaser.Scene {
         const response = await fetch("/api/games", {
           method: "PATCH",
           body: JSON.stringify({
-            nick_name: nickNameTextField.text,
             game_code: gameCodeTextField.text,
           }),
           headers: {
@@ -102,7 +109,7 @@ export default class Login extends Phaser.Scene {
         const token = await getToken();
         const response = await fetch("/api/games", {
           method: "POST",
-          body: JSON.stringify({ nick_name: nickNameTextField.text }),
+          body: JSON.stringify({}),
           headers: {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
@@ -116,7 +123,7 @@ export default class Login extends Phaser.Scene {
     const hostOrJoinContainer = this.add
       .container(xCenter, yCenter)
       .setVisible(false)
-      .add([nickNameTextField, gameCodeTextField, hostButton, joinButton]);
+      .add([gameCodeTextField, hostButton, joinButton]);
 
     if (isSignedIn()) {
       loginContainer.setVisible(false);
