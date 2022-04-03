@@ -43,6 +43,7 @@ export default class Poker extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.fadeIn(500, 0, 0, 0);
     this.cameras.main.setBackgroundColor("0x0e5628");
 
     this.deck = this.add.card(

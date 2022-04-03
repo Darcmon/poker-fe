@@ -11,8 +11,11 @@ const TITLE: Phaser.Types.GameObjects.Text.TextStyle = {
 };
 
 export default class Lobby extends Phaser.Scene {
+  lastUpdate: number;
   gameCode: Phaser.GameObjects.Text;
   players: Phaser.GameObjects.Text;
+  countDown: Phaser.GameObjects.Text;
+  nextStatus?: number;
 
   constructor() {
     super(Lobby.name);
@@ -29,8 +32,16 @@ export default class Lobby extends Phaser.Scene {
       ws.onmessage = (event) => {
         const payload = JSON.parse(event.data);
         console.log(payload);
+        this.lastUpdate = Date.now() / 1000;
         this.gameCode.setText(`Game Code: ${payload["game_code"]}`);
         this.players.setText(payload["players"].join("\n"));
+        this.nextStatus = payload["next_status"];
+        if (payload["status"] !== "LOBBY") {
+          this.cameras.main.fadeOut(500, 0, 0, 0);
+          this.time.delayedCall(500, () => {
+            this.scene.start(Poker.name);
+          });
+        }
       };
     })();
   }
@@ -55,6 +66,12 @@ export default class Lobby extends Phaser.Scene {
     });
     this.gameCode.setOrigin(0.5, 0.5);
 
+    this.countDown = this.add.text(xCenter, 220, "", {
+      color: "coral",
+      fontSize: "30px",
+    });
+    this.countDown.setOrigin(0.5, 0.5);
+
     this.players = this.add.text(xCenter, yCenter, "", {
       color: "white",
       fontSize: "30px",
@@ -73,10 +90,32 @@ export default class Lobby extends Phaser.Scene {
     this.add
       .button(xCenter + 10, height - 100, "Start Game")
       .setOrigin(0, 0.5)
-      .on("pointerup", () => {
-        this.scene.start(Poker.name);
+      .on("pointerup", async () => {
+        const token = await getToken();
+        const response = await fetch(`/api/games/${getGameId()}/start`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        });
+        const payload = await response.json();
+        console.log(payload);
       });
   }
 
-  update() {}
+  update() {
+    const nextLastUpdate = Date.now() / 1000;
+    if (!!this.nextStatus) {
+      this.nextStatus = this.nextStatus - (nextLastUpdate - this.lastUpdate);
+      this.lastUpdate = nextLastUpdate;
+      if (this.nextStatus > 0) {
+        this.countDown.setText(`Starting in: ${this.nextStatus.toFixed(2)}s`);
+      } else {
+        this.countDown.setText(`Starting now...`);
+      }
+    } else {
+      this.countDown.setText("");
+    }
+  }
 }
