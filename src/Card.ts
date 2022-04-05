@@ -9,20 +9,6 @@ const BOTTOM = HEIGHT / 2;
 const RIGHT = WIDTH / 2;
 const MARGIN = 4;
 
-const RED: Phaser.Types.GameObjects.Text.TextStyle = {
-  fontFamily: "system-ui",
-  color: "#e93323",
-  align: "center",
-  fontSize: "60px",
-};
-
-const WHITE: Phaser.Types.GameObjects.Text.TextStyle = {
-  fontFamily: "system-ui",
-  color: "#ffffff",
-  align: "center",
-  fontSize: "60px",
-};
-
 export class Card extends Phaser.GameObjects.Container {
   cardBack: Phaser.GameObjects.Container;
   cardFront: Phaser.GameObjects.Container;
@@ -40,30 +26,11 @@ export class Card extends Phaser.GameObjects.Container {
     this.setSize(WIDTH, HEIGHT);
 
     this.cardBack = this.scene.add.container();
-
-    const backBackground = this.scene.add.graphics();
-    backBackground.fillStyle(0x35363a, 1);
-    backBackground.fillRoundedRect(LEFT, TOP, WIDTH, HEIGHT, RADIUS);
-    backBackground.lineStyle(2, 0x000000);
-    backBackground.strokeRoundedRect(LEFT, TOP, WIDTH, HEIGHT, RADIUS);
-    this.cardBack.add(backBackground);
+    const image = this.scene.add
+      .image(0, 0, "card")
+      .setDisplaySize(WIDTH, HEIGHT);
+    this.cardBack.add(image);
     this.add(this.cardBack);
-
-    const diamondText = this.scene.add.text(LEFT / 2, TOP / 2, "♦", RED);
-    diamondText.setOrigin(0.5, 0.5);
-    this.cardBack.add(diamondText);
-
-    const clubText = this.scene.add.text(RIGHT / 2, TOP / 2, "♣", WHITE);
-    clubText.setOrigin(0.5, 0.5);
-    this.cardBack.add(clubText);
-
-    const heartText = this.scene.add.text(RIGHT / 2, BOTTOM / 2, "♥", RED);
-    heartText.setOrigin(0.5, 0.5);
-    this.cardBack.add(heartText);
-
-    const spadeText = this.scene.add.text(LEFT / 2, BOTTOM / 2, "♠", WHITE);
-    spadeText.setOrigin(0.5, 0.5);
-    this.cardBack.add(spadeText);
 
     this.cardFront = this.scene.add.container();
     this.setRankAndSuit(rank || "", suit || "");

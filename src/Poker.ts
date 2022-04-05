@@ -11,6 +11,7 @@ export default class Poker extends Phaser.Scene {
 
   preload() {
     window.addEventListener("resize", this.resize.bind(this));
+    this.load.image("card", "assets/cardback.png");
   }
 
   resize() {

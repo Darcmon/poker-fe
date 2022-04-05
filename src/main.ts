@@ -26,6 +26,7 @@ class Router extends Phaser.Scene {
       return;
     }
     this.scene.start(Login.name);
+    // this.scene.start(Poker.name);
   }
 }
 
