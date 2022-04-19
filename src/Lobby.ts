@@ -13,9 +13,13 @@ const TITLE: Phaser.Types.GameObjects.Text.TextStyle = {
 export default class Lobby extends Phaser.Scene {
   gameCode: Phaser.GameObjects.Text;
   players: Phaser.GameObjects.Text;
+  remainingTime: Phaser.GameObjects.Text;
+  nextEventTimeDelta?: number;
+  lastUpdateTime: number;
 
   constructor() {
     super(Lobby.name);
+    this.nextEventTimeDelta = null;
   }
 
   preload() {
@@ -55,6 +59,12 @@ export default class Lobby extends Phaser.Scene {
     });
     this.gameCode.setOrigin(0.5, 0.5);
 
+    this.remainingTime = this.add.text(xCenter, 220, "", {
+      color: "coral",
+      fontSize: "30px",
+    });
+    this.remainingTime.setOrigin(0.5, 0.5);
+
     this.players = this.add.text(xCenter, yCenter, "", {
       color: "white",
       fontSize: "30px",
@@ -73,10 +83,37 @@ export default class Lobby extends Phaser.Scene {
     this.add
       .button(xCenter + 10, height - 100, "Start Game")
       .setOrigin(0, 0.5)
-      .on("pointerup", () => {
-        this.scene.start(Poker.name);
+      .on("pointerup", async () => {
+        // this.scene.start(Poker.name);
+        const gameId = getGameId();
+        const token = await getToken();
+        const response = await fetch(`/api/games/${gameId}/start`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        });
+        const payload = await response.json();
+        this.nextEventTimeDelta = payload["next_event_time_delta"];
+        this.lastUpdateTime = Date.now() / 1000;
+        console.log(payload);
       });
   }
 
-  update() {}
+  update() {
+    if (this.nextEventTimeDelta === null) {
+      this.remainingTime.setText("");
+    } else {
+      const now = Date.now() / 1000;
+      this.nextEventTimeDelta =
+        this.nextEventTimeDelta - (now - this.lastUpdateTime);
+      this.lastUpdateTime = now;
+      if (this.nextEventTimeDelta >= 0) {
+        this.remainingTime.setText(`${this.nextEventTimeDelta.toFixed(1)}`);
+      } else {
+        this.remainingTime.setText("Starting now...");
+      }
+    }
+  }
 }
