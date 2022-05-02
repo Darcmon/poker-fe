@@ -40,8 +40,12 @@ export default class Login extends Phaser.Scene {
       .on("pointerup", async () => {
         await signIn();
 
-        const timeline = this.tweens.createTimeline();
-        timeline.add({
+        hostContainer.setX(-200);
+        joinContainer.setX(this.game.canvas.width + 200);
+        hostContainer.setVisible(true);
+        joinContainer.setVisible(true);
+
+        this.tweens.add({
           targets: loginContainer,
           scaleX: 0,
           scaleY: 0,
@@ -49,17 +53,22 @@ export default class Login extends Phaser.Scene {
           ease: Phaser.Math.Easing.Cubic.In,
           onComplete: () => {
             loginContainer.setVisible(false);
-            hostOrJoinContainer.setVisible(true).setScale(0, 0);
-          },
+          }
         });
-        timeline.add({
-          targets: hostOrJoinContainer,
-          scaleX: 1,
-          scaleY: 1,
+
+        this.tweens.add({
+          targets: hostContainer,
+          x: xCenter,
+          ease: Phaser.Math.Easing.Cubic.InOut,
           duration: 500,
-          ease: Phaser.Math.Easing.Cubic.Out,
         });
-        timeline.play();
+
+        this.tweens.add({
+          targets: joinContainer,
+          x: xCenter,
+          ease: Phaser.Math.Easing.Cubic.InOut,
+          duration: 500,
+        });
       });
     const loginContainer = this.add
       .container(xCenter, yCenter)
@@ -77,7 +86,7 @@ export default class Login extends Phaser.Scene {
       .setStyle("padding", "1em")
       .setOrigin(1, 0)
       .setStyle("border", "#ffffff");
-    const joinButton = this.add
+    let joinButton = this.add
       .button(10, -30, "Join Game")
       .setOrigin(0, 0)
       .on("pointerup", async () => {
@@ -102,7 +111,7 @@ export default class Login extends Phaser.Scene {
         setGameId(payload["game_id"]);
         this.scene.start(Lobby.name);
       });
-    const hostButton = this.add
+    let hostButton = this.add
       .button(10, 90, "Host Game")
       .setOrigin(0.5, 0.5)
       .on("pointerup", async () => {
@@ -120,17 +129,28 @@ export default class Login extends Phaser.Scene {
         setGameId(payload["game_id"]);
         this.scene.start(Lobby.name);
       });
-    const hostOrJoinContainer = this.add
-      .container(xCenter, yCenter)
-      .setVisible(false)
-      .add([gameCodeTextField, hostButton, joinButton]);
+    // const hostOrJoinContainer = this.add
+    //   .container(xCenter, yCenter)
+    //   .setVisible(false)
+    //   .add([gameCodeTextField, hostButton, joinButton]);
+    const hostContainer = this.add
+    .container(xCenter, yCenter)
+    .setVisible(false)
+    .add([hostButton]);
+
+    const joinContainer = this.add
+    .container(xCenter, yCenter)
+    .setVisible(false)
+    .add([gameCodeTextField, joinButton]);
 
     if (isSignedIn()) {
       loginContainer.setVisible(false);
-      hostOrJoinContainer.setVisible(true);
+      hostContainer.setVisible(true);
+      joinContainer.setVisible(true);
     } else {
       loginContainer.setVisible(true);
-      hostOrJoinContainer.setVisible(false);
+      joinContainer.setVisible(false);
+      hostContainer.setVisible(false);
     }
   }
 
