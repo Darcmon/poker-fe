@@ -35,6 +35,10 @@ export default class Lobby extends Phaser.Scene {
         console.log(payload);
         this.gameCode.setText(`Game Code: ${payload["game_code"]}`);
         this.players.setText(payload["players"].join("\n"));
+        if (payload["next_event_time_delta"] !== null) {
+          this.nextEventTimeDelta = payload["next_event_time_delta"];
+          this.lastUpdateTime = Date.now() / 1000;
+        }
       };
     })();
   }
